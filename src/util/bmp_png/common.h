@@ -102,6 +102,15 @@
 # define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
 #endif
 
+#if PNG_LIBPNG_VER < 10510
+#define png_get_io_ptr(png_ptr) ((png_ptr)->io_ptr)
+#endif
+
+#if PNG_LIBPNG_VER == 10510
+#include <zlib.h>
+#endif
+
+
 #if (defined(_WIN32) || defined(__WIN32__)) && !defined(WIN32)
 # define WIN32
 #endif

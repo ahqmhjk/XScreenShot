@@ -1,5 +1,9 @@
 #include "g_pixbuf.h"
 #include <png.h>
+#ifndef png_jmpbuf					/* pngconf.h (libpng 1.0.6 or later) */
+# define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
+#endif
+
 #ifndef _SETJMP_H
 #include <setjmp.h>
 #endif
@@ -134,7 +138,7 @@ static int g_pixbuf_png_image_save(FILE *f, GPixbuf * pixbuf) {
 		png_destroy_write_struct(&png_ptr, (png_infopp) NULL);
 		return 0;
 	}
-	if (setjmp(png_ptr->jmpbuf)) {
+	if (setjmp(png_jmpbuf(png_ptr))) {
 		fclose(f);
 		png_destroy_write_struct(&png_ptr, (png_infopp) NULL);
 		return 0;
